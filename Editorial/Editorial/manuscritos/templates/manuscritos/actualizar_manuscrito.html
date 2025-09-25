@@ -1,0 +1,10 @@
+{% extends 'manuscritos/base.html' %}
+{% block title %}Actualizar Manuscrito{% endblock %}
+{% block content %}
+    <h1>Actualizar Manuscrito</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+{% endblock %}

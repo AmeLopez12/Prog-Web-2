@@ -1,0 +1,34 @@
+{% extends 'manuscritos/base.html' %}
+{% block title %}Lista de Manuscritos{% endblock %}
+{% block content %}
+    <h1>Lista de Manuscritos</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Resumen</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for manuscrito in manuscritos %}
+                <tr>
+                    <td>{{ manuscrito.titulo }}</td>
+                    <td>{{ manuscrito.autor }}</td>
+                    <td>{{ manuscrito.resumen }}</td>
+                    <td>{{ manuscrito.aceptado|yesno:"Aceptado,No aceptado" }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_manuscrito' manuscrito.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'eliminar_manuscrito' manuscrito.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                        <a href="{% url 'cambiar_estado' manuscrito.pk %}" class="btn btn-sm btn-info">Cambiar Estado</a>
+                        {% for archivo in manuscrito.archivos.all %}
+                            <a href="{{ archivo.archivo.url }}" class="btn btn-sm btn-secondary" target="_blank">Ver Archivo</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

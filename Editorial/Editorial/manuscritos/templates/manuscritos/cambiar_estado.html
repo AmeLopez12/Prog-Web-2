@@ -1,0 +1,11 @@
+{% extends 'manuscritos/base.html' %}
+{% block title %}Cambiar Estado{% endblock %}
+{% block content %}
+    <h1>Cambiar Estado de "{{ manuscrito.titulo }}"</h1>
+    <p>Estado actual: {{ manuscrito.aceptado|yesno:"Aceptado,No aceptado" }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-info">Cambiar a {{ manuscrito.aceptado|yesno:"No aceptado,Aceptado" }}</button>
+        <a href="{% url 'lista_manuscritos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+{% endblock %}
