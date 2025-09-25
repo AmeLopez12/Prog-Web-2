@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+def poll_create(request):
+    return HttpResponse("Página de prueba: formulario debería ir aquí.")
