@@ -1,0 +1,15 @@
+{% extends 'polls/base.html' %}
+{% block title %}Enviar{% endblock %}
+{% block content %}
+    <h2>Enviar manuscrito</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>{{ form.title.label_tag }}{{ form.title }}</div>
+        <div>{{ form.author.label_tag }}{{ form.author }}</div>
+        <div>{{ form.abstract.label_tag }}{{ form.abstract }}</div>
+        <div>{{ form.attachments.label_tag }}{{ form.attachments }}</div>
+        <div id="preview"></div>
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock %}

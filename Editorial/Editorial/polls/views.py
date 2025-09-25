@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import PollForm
 
 def poll_create(request):
-    return HttpResponse("Página de prueba: formulario debería ir aquí.")
+    form = PollForm()
+    return render(request, "polls/submit.html", {"form": form})
