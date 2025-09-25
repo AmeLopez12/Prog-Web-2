@@ -5,7 +5,7 @@ from .models import Manuscrito
 class ManuscritoForm(forms.ModelForm):
     class Meta:
         model = Manuscrito
-        fields = ['titulo', 'autor', 'resumen']  # Campos a incluir
+        fields = ['titulo', 'autor', 'resumen']
         labels = {
             'titulo': 'Título',
             'autor': 'Autor',

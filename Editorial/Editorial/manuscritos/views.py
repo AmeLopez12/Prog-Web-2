@@ -39,9 +39,18 @@ class ActualizarManuscrito(UpdateView):
 
 # Vista para eliminar manuscrito
 class EliminarManuscrito(DeleteView):
-    model = Manuscrito
-    template_name = 'manuscritos/eliminar_manuscrito.html'
-    success_url = reverse_lazy('lista_manuscritos')
+        model = Manuscrito
+        template_name = 'manuscritos/eliminar_manuscrito.html'
+        success_url = reverse_lazy('lista_manuscritos')
+
+        def post(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            print(f"Manuscrito a eliminar: {self.object.titulo}")
+            # Eliminar archivos asociados individualmente
+            for archivo in self.object.archivos.all():
+                archivo.delete()
+            self.object.delete()
+            return redirect(self.get_success_url())
 
 # Vista para cambiar el estado de aceptacion
 def cambiar_estado(request, pk):

@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 # Modelo para el manuscrito
@@ -18,12 +19,25 @@ class Manuscrito(models.Model):
 
 # Modelo para los archivos asociados al manuscrito
 class ArchivoManuscrito(models.Model):
-    manuscrito = models.ForeignKey(Manuscrito, on_delete=models.CASCADE, related_name='archivos')  # Relacion con Manuscrito
-    archivo = models.FileField(upload_to='manuscritos/')  # Campo para archivo (PDF o imagen)
+    manuscrito = models.ForeignKey(Manuscrito, related_name='archivos', on_delete=models.CASCADE)
+    archivo = models.FileField(upload_to='manuscritos/')
 
     def __str__(self):
         return f"Archivo de {self.manuscrito.titulo}"
 
+    def delete(self, *args, **kwargs):
+        # Eliminar el archivo del sistema de archivos antes de eliminar la entrada
+        if self.archivo:
+            try:
+                if os.path.isfile(self.archivo.path):
+                    os.remove(self.archivo.path)
+                    print(f"Archivo eliminado con éxito: {self.archivo.path}")
+                else:
+                    print(f"Archivo no encontrado en: {self.archivo.path}")
+            except Exception as e:
+                print(f"Error al eliminar archivo: {e}")
+        super().delete(*args, **kwargs)
     class Meta:
         verbose_name = 'Archivo de Manuscrito'
         verbose_name_plural = 'Archivos de Manuscritos'
+    
