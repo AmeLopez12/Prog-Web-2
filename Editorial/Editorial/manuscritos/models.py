@@ -4,8 +4,8 @@ from django.db import models
 # Modelo para el manuscrito
 class Manuscrito(models.Model):
     
-    titulo = models.CharField(max_length=200)  # Titulo del manuscrit彼此
-    autor = models.CharField(max_length=100)  # Autor del manuscrito
+    titulo = models.CharField(max_length=200,null=False, blank=False)  # Titulo del manuscrito
+    autor = models.CharField(max_length=100,null=False, blank=False)  # Autor del manuscrito
     resumen = models.TextField()  # Resumen del contenido
     aceptado = models.BooleanField(default=False)  # Estado de aceptacion
     fecha_creacion = models.DateTimeField(auto_now_add=True)  # Fecha de registro

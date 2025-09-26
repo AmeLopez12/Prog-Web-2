@@ -8,9 +8,10 @@
         <h3>Archivos</h3>
         <div class="mb-3">
             <label for="{{ formulario_archivos.archivo.html_name }}" class="form-label">Seleccionar múltiples archivos (PDF o Imagenes):</label>
-            <input type="file" name="archivos" multiple accept=".pdf,.jpg,.jpeg,.png,.gif" class="form-control">
+            <input type="file" name="archivos" multiple accept=".pdf,.jpg,.jpeg,.png,.gif" class="form-control" required>
             <div class="form-text">Puedes seleccionar varios archivos al mismo tiempo manteniendo presionada la tecla Ctrl (o Cmd en Mac).</div>
         </div>
         <button type="submit" class="btn btn-primary">Registrar</button>
+        <a href="{% url 'lista_manuscritos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 {% endblock %}

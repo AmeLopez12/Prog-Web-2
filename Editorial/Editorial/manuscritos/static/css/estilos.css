@@ -1,0 +1,48 @@
+body {
+    background-color: #f4f4f4;
+}
+.banner {
+    background-color: #f4f4f4;
+    border-bottom: 3px solid rgb(237, 96, 36);
+}
+.container-fluid{
+    margin-bottom: 15px;
+    margin-top: 7px;
+    margin-left: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 40px;
+}
+.navbar-nav {
+    display: flex;
+    gap: 15px;
+}
+#boton{
+    background-color: rgb(237, 96, 36);
+    border-radius: 25px;
+    color: white;
+    padding: 7px;
+    align-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    max-width: 800px;
+    margin-top: 20px;
+}
+.table thead th {
+    text-align: center;         
+    color: white;
+    background-color: rgb(237, 96, 36);
+    border: 2px solid black;
+}
+.table tbody td {
+    text-align: center;
+    border: 2px solid black;
+}
+.btn-primary{
+    background-color: rgb(237, 96, 36);
+    border: 2px solid rgb(237, 96, 36);
+}
