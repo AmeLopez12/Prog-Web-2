@@ -2,28 +2,32 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Manuscrito, ArchivoManuscrito
-from .forms import ManuscritoForm
-from django.forms import formset_factory
+from .forms import ManuscritoForm, ArchivoForm
 
-# Vista para registrar un manuscrito
 def registrar_manuscrito(request):
     if request.method == 'POST':
         formulario_manuscrito = ManuscritoForm(request.POST)
-        if formulario_manuscrito.is_valid():
-            manuscrito = formulario_manuscrito.save()  # Guardar manuscrito
-            # Manejar multiples archivos desde request.FILES
-            archivos_subidos = request.FILES.getlist('archivos')
-            for archivo_subido in archivos_subidos:
-                if archivo_subido:
-                    archivo = ArchivoManuscrito(manuscrito=manuscrito, archivo=archivo_subido)
-                    archivo.save()  # Guardar cada archivo
+        formulario_archivos = ArchivoForm(request.POST, request.FILES)
+        if formulario_manuscrito.is_valid() and formulario_archivos.is_valid():
+            manuscrito = formulario_manuscrito.save()
+            archivos = formulario_archivos.cleaned_data['archivos']  # Lista de archivos validados
+            for archivo in archivos:
+                archivo_instance = ArchivoManuscrito(manuscrito=manuscrito, archivo=archivo)
+                archivo_instance.save()
             return redirect('lista_manuscritos')
+        else:
+            for field, errors in formulario_archivos.errors.items():
+                if field != '__all__':
+                    for error in errors:
+                        print(f"Error en {field}: {error}")
     else:
         formulario_manuscrito = ManuscritoForm()
+        formulario_archivos = ArchivoForm()
     return render(request, 'manuscritos/registrar_manuscrito.html', {
-        'formulario_manuscrito': formulario_manuscrito
+        'formulario_manuscrito': formulario_manuscrito,
+        'formulario_archivos': formulario_archivos
     })
-
+    
 # Vista para listar manuscritos
 class ListaManuscritos(ListView):
     model = Manuscrito
@@ -45,7 +49,6 @@ class EliminarManuscrito(DeleteView):
 
         def post(self, request, *args, **kwargs):
             self.object = self.get_object()
-            print(f"Manuscrito a eliminar: {self.object.titulo}")
             # Eliminar archivos asociados individualmente
             for archivo in self.object.archivos.all():
                 archivo.delete()

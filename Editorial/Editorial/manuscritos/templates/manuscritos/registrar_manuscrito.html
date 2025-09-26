@@ -5,12 +5,32 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formulario_manuscrito.as_p }}
+
+        {% if formulario_manuscrito.errors %}
+            <div class="alert alert-danger">
+                {{ formulario_manuscrito.errors }}
+            </div>
+        {% endif %}
+
         <h3>Archivos</h3>
         <div class="mb-3">
-            <label for="{{ formulario_archivos.archivo.html_name }}" class="form-label">Seleccionar múltiples archivos (PDF o Imagenes):</label>
-            <input type="file" name="archivos" multiple accept=".pdf,.jpg,.jpeg,.png,.gif" class="form-control" required>
-            <div class="form-text">Puedes seleccionar varios archivos al mismo tiempo manteniendo presionada la tecla Ctrl (o Cmd en Mac).</div>
+            <label for="{{ formulario_archivos.archivos.id_for_label }}" class="form-label">
+                Seleccionar archivos (PDF o Imágenes):
+            </label>
+            {{ formulario_archivos.archivos }}
+            {% if formulario_archivos.archivos.errors %}
+                <div class="alert alert-danger">
+                    {% for error in formulario_archivos.archivos.errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <small class="form-text text-muted">
+                Puedes seleccionar varios archivos al mismo tiempo manteniendo presionada la tecla
+                Ctrl (o Cmd en Mac).
+            </small>
         </div>
+
         <button type="submit" class="btn btn-primary">Registrar</button>
         <a href="{% url 'lista_manuscritos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
