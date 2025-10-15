@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estados y Municipios con AJAX</title>
+</head>
+<body>
+    <h1>Selecciona un Estado</h1>
+    <form>
+        <label for="estado">Estado:</label>
+        <select id="estado" name="estado">
+            <option value="">-- Selecciona --</option>
+            {% for estado in estados %}
+                <option value="{{ estado }}">{{ estado }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="municipio">Municipio:</label>
+        <select id="municipio" name="municipio" disabled>
+            <option value="">-- Primero selecciona estado --</option>
+        </select>
+    </form>
+
+    <script>
+        document.getElementById('estado').addEventListener('change', function() {
+            const estado = this.value;
+            const municipioSelect = document.getElementById('municipio');
+            municipioSelect.innerHTML = '<option value="">Cargando...</option>';
+            municipioSelect.disabled = true;
+
+            if (!estado) {
+                municipioSelect.innerHTML = '<option value="">-- Primero selecciona estado --</option>';
+                municipioSelect.disabled = true;
+                return;
+            }
+
+            fetch(`{% url 'get_municipios' %}?estado=${encodeURIComponent(estado)}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.municipios) {
+                    municipioSelect.innerHTML = '<option value="">-- Selecciona --</option>';
+                    data.municipios.forEach(mun => {
+                        const option = document.createElement('option');
+                        option.value = mun;
+                        option.textContent = mun;
+                        municipioSelect.appendChild(option);
+                    });
+                    municipioSelect.disabled = false;
+                } else {
+                    alert('Error: ' + data.error);
+                    municipioSelect.innerHTML = '<option value="">Error al cargar</option>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error en la solicitud AJAX');
+            });
+        });
+    </script>
+</body>
+</html>
