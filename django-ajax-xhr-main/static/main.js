@@ -80,7 +80,6 @@ async function addTodo(url, payload) {
   console.log(data);  // Mismo log, pero sin anidamiento.
 }
 
-
 async function updateTodo(url, payload) {
   const response = await fetch(url, {
     method: "PUT",
@@ -94,8 +93,6 @@ async function updateTodo(url, payload) {
   const data = await response.json();
   console.log(data);
 }
-
-
 async function deleteTodo(url) {
   const response = await fetch(url, {
     method: "DELETE",
