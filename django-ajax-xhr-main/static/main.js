@@ -42,7 +42,7 @@ function getAllTodos(url) {
 
 
   const operationGetAllTodos = async (url) => {
-       r = await fetch(url, {
+        r = await fetch(url, {
         headers: {
           "X-Requested-With": "XMLHttpRequest",
         }
@@ -66,25 +66,23 @@ function getAllTodos(url) {
 };
 
 
-function addTodo(url, payload) {
-  fetch(url, {
+async function addTodo(url, payload) {
+  const response = await fetch(url, {  // Await en lugar de .then(response => ...)
     method: "POST",
     credentials: "same-origin",
     headers: {
       "X-Requested-With": "XMLHttpRequest",
-      // "X-CSRFToken": getCookie("csrftoken"),
+      "X-CSRFToken": getCookie("csrftoken"),
     },
     body: JSON.stringify({payload: payload})
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
   });
+  const data = await response.json();  // Await en lugar de .then(response => response.json())
+  console.log(data);  // Mismo log, pero sin anidamiento.
 }
 
 
-function updateTodo(url, payload) {
-  fetch(url, {
+async function updateTodo(url, payload) {
+  const response = await fetch(url, {
     method: "PUT",
     credentials: "same-origin",
     headers: {
@@ -92,25 +90,21 @@ function updateTodo(url, payload) {
       "X-CSRFToken": getCookie("csrftoken"),
     },
     body: JSON.stringify({payload: payload})
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
   });
+  const data = await response.json();
+  console.log(data);
 }
 
 
-function deleteTodo(url) {
-  fetch(url, {
+async function deleteTodo(url) {
+  const response = await fetch(url, {
     method: "DELETE",
     credentials: "same-origin",
     headers: {
       "X-Requested-With": "XMLHttpRequest",
       "X-CSRFToken": getCookie("csrftoken"),
     }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
   });
+  const data = await response.json();
+  console.log(data);
 }
